@@ -1,0 +1,129 @@
+<html>
+  <head>
+    <title>Contact Form</title>
+  </head>
+  <body>
+  <h1>Contact Doxr</h1> <!-- change this line! -->
+<style>
+  @import url(https://fonts.googleapis.com/css?family=Merriweather);
+  *,
+  *:before,
+  *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    background: #252525;
+    font-family: 'Monospace';
+    padding: 1em;
+  }
+
+  h1 {
+    text-align: center;
+    color: #dcdcdc;
+    text-shadow: 1px 1px 0 white;
+  }
+
+  doxrform {
+    max-width: 600px;
+    text-align: center;
+    margin: 20px auto;
+  }
+  doxrform input, doxrform textarea {
+    border: 0;
+    outline: 0;
+    padding: 1em;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    display: block;
+    width: 100%;
+    margin-top: 1em;
+    font-family: 'Monospace';
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    resize: none;
+  }
+  doxrform input:focus, doxrform textarea:focus {
+    -moz-box-shadow: 0 0px 2px #e74c3c !important;
+    -webkit-box-shadow: 0 0px 2px #e74c3c !important;
+    box-shadow: 0 0px 2px #e74c3c !important;
+  }
+  doxrform #input-submit {
+    color: white;
+    background: #313131;
+    cursor: pointer;
+  }
+  doxrform #input-submit:hover {
+    -moz-box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
+    -webkit-box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
+    box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
+  }
+  doxrform textarea {
+    height: 126px;
+  }
+
+  .half {
+    float: left;
+    width: 48%;
+    margin-bottom: 1em;
+  }
+
+  .right {
+    width: 50%;
+  }
+
+  .left {
+    margin-right: 2%;
+  }
+
+  @media (max-width: 480px) {
+    .half {
+      width: 100%;
+      float: none;
+      margin-bottom: 0;
+    }
+  }
+  /* Clearfix */
+  .cf:before,
+  .cf:after {
+    content: " ";
+    /* 1 */
+    display: table;
+    /* 2 */
+  }
+
+  .cf:after {
+    clear: both;
+  }
+
+</style>
+<doxrform class="cf" onsubmit="submitForm();">
+  <div class="half left cf">
+    <input id="input-name" placeholder="Name" maxlength="20">
+    <input id="input-email" placeholder="Contacts like Discord usrname" maxlength="30">
+  </div>
+  <div class="half right cf">
+    <textarea name="message" id="input-message" placeholder="Message" maxlength="350"></textarea>
+  </div>  
+  <input type="submit" value="Submit" id="input-submit" onclick=submitForm();>
+</doxrform>
+
+<script>
+  function submitForm() {
+    var text = document.getElementById('input-message').value;
+    fetch('/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text: text, name: document.getElementById('input-name').value, contact: document.getElementById('input-email').value })
+    });
+    window.location.replace("/submitted");
+  }
+</script>
+</body>
+</html>
