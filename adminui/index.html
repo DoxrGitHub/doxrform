@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>AdminUI</title>
+   <link rel="icon" href="favicon.ico">
+   <style>
+       body {
+           font-family: monospace; 
+       }
+       .cards {
+           display: grid;
+           grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+           grid-gap: 1rem;
+       }
+       .card {
+           background-color: rgb(59, 59, 59);
+           padding: 5px;
+           color: white;
+          max-height: 600px;
+          overflow: auto;
+       }
+       .card p {
+           color: white;
+       }
+       .card h3 {
+           color: white;
+       }
+       a {
+           color: red;
+       }
+   </style>
+ </head>
+ <body>
+   <h1>AdminUI Panel</h1>
+   <p>Control doxrform with AdminUI.</p>
+   <p class="delete"><b><a href="javascript:if(confirm('Are you sure you want to delete EVERY form? Please think about it first.')) { fetch('/clear'); location.reload(); }">Delete ALL forms</a></b></p>
+   <hr>
+   <h2>Submitted forms:</h2>
+   <div class="cards"></div>
+   <script>
+     fetch('/read')
+       .then(response => response.json())
+       .then(data => {
+         data.forEach(form => {
+           const card = document.createElement('div');
+           card.className = 'card';
+           card.innerHTML = `
+             <h3>Name: ${form.name}</h3>
+             <p>Contact: ${form.contact}</p>
+             <br>
+             <p>Info: ${form.message}</p>
+             <p class="delete"><b><a href="javascript:if(confirm('Are you sure you want to delete this form?')) { fetch('/delete?id=' + ${form.id}); location.reload(); }">Delete form</a></b></p>
+           `;
+           document.querySelector('.cards').appendChild(card);
+         });
+       })
+       .catch(error => console.error('Error:', error));
+   </script>
+ </body>
+</html>
